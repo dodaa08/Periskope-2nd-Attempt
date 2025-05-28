@@ -5,7 +5,7 @@ A full-stack, real-time chat application built with **Next.js**, **TypeScript**,
 
 
 # How it flows 
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/6169ca5f-48fd-45f2-abff-41ae46239583)
 
 
 
