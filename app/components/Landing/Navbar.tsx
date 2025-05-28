@@ -1,7 +1,12 @@
 "use client";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 export default function Navbar() {
+ 
+
   return (
     <nav className="w-full bg-[#08160b] text-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4">
