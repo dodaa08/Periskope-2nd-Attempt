@@ -33,3 +33,51 @@ A full-stack, real-time chat application built with **Next.js**, **TypeScript**,
 
 ## 📁 Project Structure
 
+/app
+/chat
+/auth
+/components
+/lib
+/hooks
+/types
+/utils
+
+
+
+## 🔧 Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/realtime-chat-app.git
+   cd realtime-chat-app
+Install dependencies
+
+npm install
+
+Create a .env.local file and add the following:
+
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+
+Run the app locally
+
+npm run dev
+🧪 Testing
+Coming soon...
+
+
+💡 Inspiration
+This project is inspired by Preiskope — bringing the speed, minimalism, and powerful chat experience to a modern open-source stack.
+
+🙌 Contributions
+Contributions are welcome! Feel free to open an issue or submit a pull request. Let's build together!
+
+📄 License
+MIT License
+
+Made with ❤️ by Kartik 
+---
+
+Happy shipping! 🚢
+
+
