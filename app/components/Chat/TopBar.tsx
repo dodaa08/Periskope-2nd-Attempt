@@ -3,7 +3,7 @@ import { FaRegCommentDots, FaSyncAlt, FaQuestionCircle, FaChevronDown, FaVolumeM
 
 export default function TopBar() {
   return (
-    <header className="w-full flex items-center justify-between bg-white border-b px-4 h-12">
+    <header className="w-full flex items-center justify-between bg-white border-b px-4 h-12 z-10">
       {/* Left: Chats label */}
       <div className="flex items-center gap-2">
         <FaRegCommentDots className="text-gray-400 text-lg" />

@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 export default function Sidebar() {
   return (
-    <aside className="flex flex-col items-center bg-white h-screen w-18 py-4 border-r gap-2 relative">
+    <aside className="flex flex-col items-center bg-white min-h-screen  w-18 py-4 border-r gap-2 relative">
       
       {/* Logo */}
       <Link href="/">
