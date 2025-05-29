@@ -4,6 +4,16 @@ import { supabase } from "@/lib/supabaseClient";
 import { CiSearch } from "react-icons/ci";
 import { FaSearch } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
+import { IoMdAttach } from "react-icons/io";
+import { CiFaceSmile } from "react-icons/ci";
+import { IoTimeOutline } from "react-icons/io5";
+import { CiTimer } from "react-icons/ci";
+import { FaMicrophone } from "react-icons/fa";
+import { HiOutlineSparkles } from "react-icons/hi";
+import { BiSolidFoodMenu } from "react-icons/bi";
+import { MdOutlineKeyboardArrowUp } from "react-icons/md";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { HiSparkles } from "react-icons/hi";
 
 
 interface User {
@@ -169,7 +179,7 @@ export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProp
     : messages;
 
   return (
-    <div className="flex flex-col h-full bg-whatsapp-pattern rounded-lg shadow relative mr-10">
+    <div className="flex flex-col h-full bg-gray-50 rounded-lg shadow relative mr-10">
       {/* Header */}
       <div className="flex items-center gap-3 px-6 py-3 border-b bg-white sticky top-0 z-10">
         {avatar ? (
@@ -180,7 +190,10 @@ export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProp
           </div>
         )}
         <div className="flex flex-col flex-1">
-          <span className="font-semibold text-gray-900">{name}</span>
+          <span className="font-semibold text-gray-900 flex items-center gap-2">
+            {name}
+            <span className="text-xs text-gray-500">&middot; {(currentUser && selectedUser.id === currentUser.id) ? 'You' : getSenderInfo(selectedUser.id).contact}</span>
+          </span>
           <span className="text-xs text-gray-500">Online</span>
         </div>
         {showSearch ? (
@@ -193,11 +206,11 @@ export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProp
           />
         ) : (
           <div className="flex items-center gap-3 mr-5 ">
-             <div className="text-green-700">
-            ✨
+             <div className="">
+               <HiSparkles size={20} className="text-black" />
             </div>
           <button
-            className="ml-auto text-gray-400 hover:text-green-600 cursor-pointer"
+            className="ml-auto text-gray-800 hover:text-green-600 cursor-pointer"
             onClick={() => setShowSearch(true)}
             title="Search messages"
             >
@@ -261,22 +274,44 @@ export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProp
         <div ref={messagesEndRef} />
       </div>
       {/* Input */}
-      <form onSubmit={sendMessage} className="px-6 py-3 border-t bg-white sticky bottom-0 z-10 flex items-center gap-2">
-        <input
-          type="text"
-          className="flex-1 rounded-full border text-gray-800 border-gray-200 px-4 py-2 focus:outline-none bg-gray-50"
-          placeholder="Type a message..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={!currentUser || !selectedUser}
-        />
-        <button
-          type="submit"
-          className=" text-green-700 rounded-full w-10 h-10 flex items-center justify-center disabled:opacity-50"
-          disabled={!input.trim() || !currentUser || !selectedUser}
-        >
-          <IoSend />
-        </button>
+      <form onSubmit={sendMessage} className="px-6 py-3 border-t bg-white sticky bottom-0 z-10 flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            className="flex-1 rounded border text-gray-800 border-gray-100 px-4 py-2 focus:outline-none bg-gray-50"
+            placeholder="Type a message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            disabled={!currentUser || !selectedUser}
+          />
+          <button
+            type="submit"
+            className="text-green-700 rounded-full w-10 h-10 flex items-center justify-center disabled:opacity-50"
+            disabled={!input.trim() || !currentUser || !selectedUser}
+          >
+            <IoSend />
+          </button>
+        </div>
+        {/* Action icons row */}
+        <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center gap-4 text-gray-700 ml-2">
+            <button type="button" className="hover:text-green-600"><IoMdAttach size={20} /></button>
+            <button type="button" className="hover:text-green-600"><CiFaceSmile size={20} /></button>
+            <button type="button" className="hover:text-green-600"><IoTimeOutline size={20} /></button>
+            <button type="button" className="hover:text-green-600"><CiTimer size={20} /></button>
+            <button type="button" className="hover:text-green-600"><HiOutlineSparkles size={20} /></button>
+            <button type="button" className="hover:text-green-600"><BiSolidFoodMenu size={20} /></button>
+            <button type="button" className="hover:text-green-600"><FaMicrophone size={18} /></button>
+          </div>
+          <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded  px-3 py-1">
+            <img src="/favicon.ico" alt="Periskope" className="w-5 h-5 rounded-full" />
+            <span className="font-semibold text-gray-700 text-sm">Periskope</span>
+            <div className="flex flex-col ml-10">
+            <MdOutlineKeyboardArrowUp className="text-gray-400 mb-[-8px]" />
+            <MdOutlineKeyboardArrowDown className="text-gray-400" />
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   );
