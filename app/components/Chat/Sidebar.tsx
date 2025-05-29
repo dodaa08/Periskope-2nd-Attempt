@@ -14,21 +14,23 @@ import {
   FaStar,
   FaRegFileAlt,
 } from "react-icons/fa";
-
+import Link from "next/link";
 export default function Sidebar() {
   return (
     <aside className="flex flex-col items-center bg-white h-screen w-18 py-4 border-r gap-2 relative">
       
       {/* Logo */}
+      <Link href="/">
       <div className="mb-4 flex flex-col items-center">
         <div className="">
           <img
             src="/favicon.ico"
             alt="Periskope Logo"
             className="w-8 h-8 object-contain"
-          />
+            />
         </div>
       </div>
+      </Link>
 
       {/* Main Icons */}
       <nav className="flex flex-col items-center gap-2 flex-1">

@@ -5,6 +5,7 @@ import { IoMdFunnel } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { FaFolderPlus, FaSearch } from "react-icons/fa";
 import { FaWifi } from "react-icons/fa";
+import { RiChatSmileAiLine } from "react-icons/ri";
 
 
 

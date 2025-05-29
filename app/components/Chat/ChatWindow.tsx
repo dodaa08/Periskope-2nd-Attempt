@@ -286,7 +286,7 @@ export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProp
           />
           <button
             type="submit"
-            className="text-green-700 rounded-full w-10 h-10 flex items-center justify-center disabled:opacity-50"
+            className="text-green-700 text-xl cursor-pointer hover:text-green-600 rounded-full w-10 h-10 flex items-center justify-center disabled:opacity-50"
             disabled={!input.trim() || !currentUser || !selectedUser}
           >
             <IoSend />
