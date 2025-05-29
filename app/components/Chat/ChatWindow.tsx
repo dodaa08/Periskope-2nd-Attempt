@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoMdSend } from "react-icons/io";
-
+import { supabase } from "@/lib/supabaseClient";
 
 interface User {
   id: string;
@@ -10,8 +10,17 @@ interface User {
     full_name?: string;
     name?: string;
     avatar_url?: string;
+    phone?: string;
   };
-  email: string;
+  email: string;    
+}
+
+interface Message {
+  id: string;
+  sender_id: string;
+  receiver_id: string;
+  content: string;
+  created_at: string;
 }
 
 interface ChatWindowProps {
@@ -20,17 +29,106 @@ interface ChatWindowProps {
 }
 
 export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProps) {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Fetch messages when selectedUser or currentUser changes
+  useEffect(() => {
+    if (!selectedUser || !currentUser) return;
+    setLoading(true);
+    const fetchMessages = async () => {
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*")
+        .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${selectedUser.id}),and(sender_id.eq.${selectedUser.id},receiver_id.eq.${currentUser.id})`)
+        .order("created_at", { ascending: true });
+      if (data) setMessages(data);
+      setLoading(false);
+    };
+    fetchMessages();
+  }, [selectedUser, currentUser]);
+
+  // Subscribe to new messages in real time
+  useEffect(() => {
+    if (!selectedUser || !currentUser) return;
+    const channel = supabase
+      .channel("messages")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+        },
+        (payload) => {
+          const msg = payload.new as Message;
+          const isRelevant =
+            (msg.sender_id === currentUser.id && msg.receiver_id === selectedUser.id) ||
+            (msg.sender_id === selectedUser.id && msg.receiver_id === currentUser.id);
+          if (isRelevant) {
+            setMessages((prev) => {
+              if (prev.some((m) => m.id === msg.id)) return prev;
+              return [...prev, msg];
+            });
+          }
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedUser, currentUser]);
+
+  // Scroll to bottom on new messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Send message
+  const sendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || !currentUser || !selectedUser) return;
+    const { data, error } = await supabase.from("messages").insert([
+      {
+        sender_id: currentUser.id,
+        receiver_id: selectedUser.id,
+        content: input.trim(),
+      },
+    ]).select().single();
+    if (!error && data) {
+      setMessages((prev) => [...prev, data]); // Optimistically add
+      setInput("");
+    }
+  };
+
   if (!selectedUser) {
     return (
-      <div className="flex-1 mt-40 flex items-center w-full justify-center text-gray-500 text-lg">
+      <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">
         Select a user to start chatting
       </div>
     );
   }
+  const getSenderInfo = (sender_id: string): { name: string; contact: string } => {
+    if (currentUser && sender_id === currentUser.id) {
+      return {
+        name: currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || currentUser.email || "Unknown",
+        contact: currentUser.user_metadata?.phone || currentUser.email,
+      };
+    } else if (selectedUser && sender_id === selectedUser.id) {
+      return {
+        name: selectedUser.user_metadata?.full_name || selectedUser.user_metadata?.name || selectedUser.email || "Unknown",
+        contact: selectedUser.user_metadata?.phone || selectedUser.email,
+      };
+    }
+    return { name: "Unknown", contact: "" };
+  };
+
   const name = selectedUser.user_metadata?.full_name || selectedUser.user_metadata?.name || selectedUser.email || "Unknown";
   const avatar = selectedUser.user_metadata?.avatar_url;
   return (
-    <div className="flex flex-col h-full bg-[#f7f9fa] rounded-lg shadow relative">
+    <div className="flex flex-col h-full bg-[#f7f9fa] rounded-lg shadow relative mr-10">
       {/* Header */}
       <div className="flex items-center gap-3 px-6 py-3 border-b bg-white sticky top-0 z-10">
         {avatar ? (
@@ -45,21 +143,54 @@ export default function ChatWindow({ selectedUser, currentUser }: ChatWindowProp
           <span className="text-xs text-gray-500">Online</span>
         </div>
       </div>
-      {/* Messages area (empty for now) */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-2">
-        {/* Messages will go here */}
+      {/* Messages area */}
+      <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-2" style={{ background: "#ece5dd" }}>
+        {loading ? (
+          <div className="text-gray-400 text-center">Loading...</div>
+        ) : (
+          messages.length === 0 ? (
+            <div className="text-gray-400 text-center text-sm mr-20">No messages yet</div>
+          ) : (
+            messages.map((msg) => {
+              const isMe = msg.sender_id === currentUser?.id;
+              const sender = getSenderInfo(msg.sender_id);
+              return (
+                <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+                <div className={`flex flex-col gap-2 max-w-xs md:max-w-md px-4 py-2 rounded-lg shadow text-sm ${isMe ? "bg-green-100 text-green-900" : "bg-white text-gray-900"}`} style={{ wordBreak: "break-word" }}>
+                      <span className="text-xs text-gray-400 ml-2">{sender.contact}</span>
+                  <div  className="flex gap-10">
+                    <div className="flex items-center justify-between mb-1">
+                      {/* <span className="font-bold text-green-700">{sender.name}</span> */}
+                    </div>
+                    <div>{msg.content}</div>
+                    <div className="text-[10px] text-gray-400 mt-1 text-right">{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                </div>
+                  </div>
+                </div>
+              );
+            })
+          )
+        )}
+        <div ref={messagesEndRef} />
       </div>
       {/* Input */}
-      <div className="px-6 py-3 border-t bg-white sticky bottom-5 z-10 flex items-center gap-2">
+      <form onSubmit={sendMessage} className="px-6 py-3 border-t bg-white sticky bottom-10 z-10 flex items-center gap-2">
         <input
           type="text"
-          className="flex-1 rounded text-gray-500 border border-gray-100 px-4 py-2 focus:outline-none bg-gray-50"
+          className="flex-1 rounded-full border text-gray-500 border-gray-200 px-4 py-2 focus:outline-none bg-gray-50"
           placeholder="Type a message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={!currentUser || !selectedUser}
         />
-        <button className="text-green-600 hover:text-green-700  rounded-full text-2xl flex items-center justify-center cursor-pointer">
-        <IoMdSend />
+        <button
+          type="submit"
+          className="bg-green-500 hover:bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center disabled:opacity-50"
+          disabled={!input.trim() || !currentUser || !selectedUser}
+        >
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M22 2L11 13" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
-      </div>
+      </form>
     </div>
   );
 } 
