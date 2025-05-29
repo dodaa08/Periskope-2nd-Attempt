@@ -37,26 +37,28 @@ A full-stack, real-time chat application built with **Next.js**, **TypeScript**,
 
 ## 📁 Project Structure
 
-A scalable Next.js project structure, following best practices for maintainability and clarity:
+├── src/                      # Source code
+│   ├── app/                 # App routing (Next.js 13+)
+│   │   ├── (auth)/          # Route group: authentication pages
+│   │   ├── chat/            # Route group: chat pages
+│   │   ├── layout.tsx       # Root layout
+│   │   └── page.tsx         # Entry point (home page)
+│   │
+│   ├── components/          # Reusable React components
+│   │   ├── ui/              # Base UI elements (Button, Card, Modal)
+│   │   ├── layout/          # Layout-specific components (Header, Footer)
+│   │   └── features/        # Domain-specific components (auth, dashboard)
+│   │
+│   ├── hooks/               # Custom React hooks
+│   ├── lib/                 # Helpers (API clients, constants, etc.)
+│   ├── utils/               # Utility functions
+│   ├── types/               # TypeScript types and interfaces
+│   └── styles/              # Global and component styles
+│
+├── public/                  # Static assets (images, icons, fonts)
+├── package.json             # Project metadata and dependencies
+└── next.config.js           # Next.js configuration
 
-├── src/
-│ ├── app/ # Next.js routing and pages
-│ │ ├── (auth)/ # Route group: authentication-related pages
-│ │ ├── chat/ # Route group: chat-related pages
-│ │ ├── layout.tsx # Root layout
-│ │ └── page.tsx # Entry page
-│ ├── components/ # Reusable React components
-│ │ ├── ui/ # Generic UI components (Button, Card, Modal, etc.)
-│ │ ├── layout/ # Layout components (Header, Footer, Sidebar)
-│ │ └── features/ # Feature/domain-specific components (e.g., auth, dashboard)
-│ ├── hooks/ # Custom React hooks
-│ ├── lib/ # Helper functions, constants, API clients
-│ ├── utils/ # Utility functions
-│ ├── types/ # TypeScript types and interfaces
-│ └── styles/ # Global and component-level styles
-├── public/ # Static assets (images, fonts, etc.)
-├── package.json
-└── next.config.js
 
 
 ---
