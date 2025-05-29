@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { IoMdFunnel } from "react-icons/io";
+import { CiSearch } from "react-icons/ci";
+import { FaFolderPlus } from "react-icons/fa";
+
 
 interface User {
   id: string;
@@ -37,12 +41,26 @@ export default function PeopleList()  {
     <div className="flex flex-col bg-white rounded-lg shadow w-full">
       {/* Search/Filter Bar */}
       <div className="flex items-center gap-2 px-4 py-3 border-b sticky top-0 bg-white z-10">
-        <button className="bg-green-100 text-green-700 px-3 py-1 rounded font-semibold text-sm">Custom filter</button>
-        <input className="flex-1 bg-gray-50 text-black border border-gray-200 rounded px-3 py-1 text-sm focus:outline-none" placeholder="Search"  />
-        <button className="bg-gray-100 text-gray-700 px-3 py-1 rounded font-semibold text-sm flex items-center gap-1">
-          <span>Filtered</span>
-          <svg width="12" height="12" fill="none" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" stroke="#4B5563" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-        </button>
+        <div className="flex items-center  text-green-600">  
+         <FaFolderPlus size={16} />
+        <button className="  px-3 py-1 rounded font-semibold text-sm">Custom filter</button>
+         </div>
+         
+            <button className="flex items-center  border border-gray-200 rounded-md px-2 py-1">
+               <span className="text-sm text-gray-500">Save</span>
+          </button>
+        
+        <div className="flex items-center ml-auto border border-gray-200 rounded-md px-2 py-1">
+
+        <CiSearch size={16} className="text-gray-500 mr-2" />
+          <div className="">
+            <span className="text-sm text-gray-500">Search</span>
+          </div>
+          </div>
+          <button className="flex items-center gap-1 text-green-600 border-2 border-gray-100 rounded-md px-2 py-1 ">
+        <IoMdFunnel size={16} />
+          <span className="text-sm font-semibold">Filtered</span>
+          </button>
       </div>
       {/* People List */}
       {users.map((user, idx) => {
