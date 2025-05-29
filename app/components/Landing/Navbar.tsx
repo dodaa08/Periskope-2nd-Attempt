@@ -1,13 +1,21 @@
 "use client";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+// import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import { useSession } from "@supabase/auth-helpers-react";
+import {supabase} from "@/lib/supabaseClient";
 
 export default function Navbar() {
- 
+    const  session = useSession();
+    const router = useRouter();
 
-  return (
+    const signOut = () => {
+      supabase.auth.signOut();
+      router.push("/signin");
+    }
+
+
+  return (  
     <nav className="w-full bg-[#08160b] text-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4">
         {/* Logo */}
@@ -27,11 +35,18 @@ export default function Navbar() {
           <a href="#pricing" className="hover:text-green-400 transition">Pricing</a>
         </div>
         {/* Login Button */}
-        <div className="hidden md:block">
-          <Link href="/signin">
-            <button className="bg-green-600 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded transition">Login</button>
+        {
+          session ? (
+            <div className="hidden md:block">
+              <button onClick={() => signOut()} className="bg-green-700 cursor-pointer hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-l transition">Logout</button>
+            </div>
+          ) : (
+            <div className="hidden md:block">
+              <Link href="/signin">
+            <button className="bg-green-700 cursor-pointer hover:bg-green-600 text-white  font-semibold px-6 py-2 rounded-l transition">Login</button>
           </Link>
-        </div>
+          </div>
+        )}
         {/* Mobile Hamburger (optional, not implemented for brevity) */}
       </div>
     </nav>
