@@ -34,30 +34,30 @@ A full-stack, real-time chat application built with **Next.js**, **TypeScript**,
 | Supabase     | Backend-as-a-Service (auth, DB, real-time)|
 
 ---
-
 ## 📁 Project Structure
 
-├── src/                      # Source code
-│   ├── app/                 # App routing (Next.js 13+)
-│   │   ├── (auth)/          # Route group: authentication pages
-│   │   ├── chat/            # Route group: chat pages
-│   │   ├── layout.tsx       # Root layout
-│   │   └── page.tsx         # Entry point (home page)
-│   │
-│   ├── components/          # Reusable React components
-│   │   ├── ui/              # Base UI elements (Button, Card, Modal)
-│   │   ├── layout/          # Layout-specific components (Header, Footer)
-│   │   └── features/        # Domain-specific components (auth, dashboard)
-│   │
-│   ├── hooks/               # Custom React hooks
-│   ├── lib/                 # Helpers (API clients, constants, etc.)
-│   ├── utils/               # Utility functions
-│   ├── types/               # TypeScript types and interfaces
-│   └── styles/              # Global and component styles
-│
-├── public/                  # Static assets (images, icons, fonts)
-├── package.json             # Project metadata and dependencies
-└── next.config.js           # Next.js configuration
+A scalable and maintainable **Next.js** project structure:
+
+- root/
+  - public/               <!-- Static assets (images, icons, fonts) -->
+  - src/                  <!-- Source code -->
+    - app/                <!-- App routing (Next.js 13+) -->
+      - (auth)/           <!-- Auth-related routes -->
+      - chat/             <!-- Chat-related routes -->
+      - layout.tsx        <!-- Root layout -->
+      - page.tsx          <!-- Main entry page -->
+    - components/         <!-- Reusable UI components -->
+      - ui/               <!-- Generic UI (Button, Modal, etc.) -->
+      - layout/           <!-- Header, Footer, Sidebar, etc. -->
+      - features/         <!-- Domain-specific (Auth, Dashboard) -->
+    - hooks/              <!-- Custom React hooks -->
+    - lib/                <!-- API clients, constants, helpers -->
+    - utils/              <!-- Utility/helper functions -->
+    - types/              <!-- TypeScript types/interfaces -->
+    - styles/             <!-- Global/component styles -->
+  - package.json          <!-- Project metadata -->
+  - next.config.js        <!-- Next.js config -->
+
 
 
 
