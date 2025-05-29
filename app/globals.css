@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bg-whatsapp-pattern {
+  background-image: url("https://web.whatsapp.com/img/bg-chat-tile_7f495a77b5aa4c895b9b.png");
+  background-repeat: repeat;
+  background-size: contain;
+  background-color: #ece5dd;
+}
+
+.chatBackground {
+  background-image: url('/images/whatsapp-bg.png'); /* Put the image in /public/images/ */
+  background-repeat: repeat;
+  background-size: auto;
+  background-color: #f0f2f5;
+}
