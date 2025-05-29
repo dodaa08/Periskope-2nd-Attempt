@@ -5,7 +5,6 @@ import { IoMdFunnel } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { FaFolderPlus } from "react-icons/fa";
 
-
 interface User {
   id: string;
   name: string;
@@ -18,11 +17,15 @@ interface User {
   email: string;
 }
 
+export type { User };
+interface PeopleListProps {
+  onSelectUser: (user: User) => void;
+  selectedUserId?: string;
+}
 
-export default function PeopleList()  {
+export default function PeopleList({ onSelectUser, selectedUserId }: PeopleListProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     async function fetchUsers() {
       setLoading(true); 
@@ -38,7 +41,7 @@ export default function PeopleList()  {
   if (loading) return <div className="p-4 text-center text-gray-500">Loading...</div>;
 
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow w-full">
+    <div className="flex flex-col bg-white w-max rounded-lg shadow w-full">
       {/* Search/Filter Bar */}
       <div className="flex items-center gap-2 px-4 py-3 border-b sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-600">  
@@ -73,6 +76,7 @@ export default function PeopleList()  {
         return (
           <div
             key={user.id}
+            onClick={() => onSelectUser(user)} 
             className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition group"
           >
             {avatar ? (
