@@ -498,7 +498,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
               {privateNote ? 'Private Note' : 'Whatsapp'}
             </button>
           </div>
-          {/* Action icons row */}
+          {/* Action icons row */}s
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-4 text-gray-700 ml-2">
               {/* File input and attach button (only one, in the action row) */}
@@ -683,7 +683,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
                               highlightMatch(msg.content, search)
                             )}
                           </div>
-                          <div className="text-[10px] text-gray-400 mt-1 text-right">{new Date(msg.created_at).toLocaleString()}</div>
+                          <div className="text-[10px] text-gray-400 mt-1 text-right">{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         </div>
                       </div>
                     </div>
