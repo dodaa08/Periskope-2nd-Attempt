@@ -69,6 +69,8 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
   const [groupMemberIds, setGroupMemberIds] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [privateNote, setPrivateNote] = useState(false);
+  const [groupFilter, setGroupFilter] = useState<'all' | 'private' | 'normal'>('all');
 
   // Fetch users when a group is selected
   useEffect(() => {
@@ -218,15 +220,18 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
   const sendGroupMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || !currentUser || !selectedGroup) return;
+    let content = input.trim();
+    if (privateNote) content = `__PRIVATE_NOTE__:${content}`;
     const { data, error } = await supabase.from("group_messages").insert([
       {
         sender_id: currentUser.id,
         group_id: selectedGroup.id,
-        content: input.trim(),
+        content,
       },
     ]).select().single();
     if (!error && data) {
       setInput("");
+      setPrivateNote(false);
     }
   };
 
@@ -290,14 +295,20 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
     };
     // Get group participant users (members)
     const groupMembers = users.filter(u => groupMemberIds.includes(u.id));
-    // Filter messages by search
-    const filteredMessages = search
-      ? messages.filter(
-          (msg) =>
-            msg.content.toLowerCase().includes(search.toLowerCase()) ||
-            getGroupSenderEmail(msg.sender_id).toLowerCase().includes(search.toLowerCase())
-        )
-      : messages;
+    // Filter messages by search and groupFilter
+    let filteredMessages = messages;
+    if (search) {
+      filteredMessages = filteredMessages.filter(
+        (msg) =>
+          msg.content.toLowerCase().includes(search.toLowerCase()) ||
+          getGroupSenderEmail(msg.sender_id).toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    if (groupFilter === 'private') {
+      filteredMessages = filteredMessages.filter(msg => msg.content.startsWith("__PRIVATE_NOTE__:"));
+    } else {
+      filteredMessages = filteredMessages.filter(msg => !msg.content.startsWith("__PRIVATE_NOTE__:"));
+    }
     return (
       <div className="flex flex-col h-full bg-gray-50 rounded-lg shadow relative mr-10">
         {/* Group Header */}
@@ -372,6 +383,12 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
             </button>
           )}
         </div>
+        {/* Filter bar for group messages */}
+        <div className="flex items-center gap-2 px-6 py-2 bg-white border-b border-gray-100">
+          <span className="text-xs text-gray-500 font-semibold">Show:</span>
+          <button onClick={() => setGroupFilter('private')} className={`text-xs px-2 py-1 rounded ${groupFilter==='private' ? 'bg-yellow-100 text-yellow-800 font-bold' : 'bg-gray-100 text-gray-600'}`}>Private Notes</button>
+          <button onClick={() => setGroupFilter('normal')} className={`text-xs px-2 py-1 rounded ${groupFilter==='normal' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-gray-100 text-gray-600'}`}>Whatsapp</button>
+        </div>
         {/* Participants Modal */}
         {showParticipants && (
           <div className="fixed inset-0 bg-transparent text-black bg-opacity-30 flex items-center justify-center z-50">
@@ -421,10 +438,10 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
                 const isMe = msg.sender_id === currentUser?.id;
                 return (
                   <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
-                    <div className={`flex flex-col max-w-xs md:max-w-md px-4 py-2 rounded-lg shadow text-sm ${isMe ? "bg-green-100 text-green-900" : "bg-white text-gray-900"}`} style={{ wordBreak: "break-word" }}>
+                    <div className={`flex flex-col max-w-xs md:max-w-md px-4 py-2 rounded-lg shadow text-sm ${msg.content.startsWith("__PRIVATE_NOTE__:") ? "bg-yellow-50 border-l-4 border-yellow-400 text-black" : isMe ? "bg-green-100 text-green-900" : "bg-white text-gray-900"}`} style={{ wordBreak: "break-word" }}>
                       {/* Sender email on top, small */}
-                      <div className="text-[11px] text-gray-400 mb-1 font-medium">{getGroupSenderEmail(msg.sender_id)}</div>
-                      {/* Message content with highlight */}
+                      <div className="text-[11px] text-gray-400 mb-1 font-medium">{getGroupSenderEmail(msg.sender_id)}{msg.content.startsWith("__PRIVATE_NOTE__:") && <span className="ml-2 text-yellow-800 font-bold">[Private Note]</span>}</div>
+                      {/* Message content with highlight, strip label prefix for private notes */}
                       <div>
                         {isFileUrl(msg.content) ? (
                           isImage(msg.content) ? (
@@ -437,7 +454,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
                             </a>
                           )
                         ) : (
-                          highlightMatch(msg.content, search)
+                          highlightMatch(msg.content.replace(/^__PRIVATE_NOTE__:/, ''), search)
                         )}
                       </div>
                       {/* Time and ticks directly under message, right-aligned, tight */}
@@ -459,7 +476,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
             <input
               type="text"
               className="flex-1 rounded border text-gray-800 border-gray-100 px-4 py-2 focus:outline-none bg-gray-50"
-              placeholder="Type a message..."
+              placeholder={privateNote ? "Type a private note..." : "Type a message..."}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={!currentUser}
@@ -470,6 +487,15 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
               disabled={!input.trim() || !currentUser}
             >
               <IoSend />
+            </button>
+            {/* Private note toggle */}
+            <button
+              type="button"
+              className={`ml-2 cursor-pointer px-2 py-1 rounded text-xs font-semibold border ${privateNote ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 'bg-green-100 text-green-800 border-green-300'}`}
+              onClick={() => setPrivateNote(v => !v)}
+              title="Toggle Private Note"
+            >
+              {privateNote ? 'Private Note' : 'Whatsapp'}
             </button>
           </div>
           {/* Action icons row */}
@@ -548,14 +574,19 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
     return date.toLocaleDateString();
   }
 
-  // Filter messages by search
-  const filteredMessages = search
-    ? messages.filter(
-        (msg) =>
-          msg.content.toLowerCase().includes(search.toLowerCase()) ||
-          getSenderInfo(msg.sender_id).name.toLowerCase().includes(search.toLowerCase())
-      )
-    : messages;
+  let filteredMessages = messages;
+  if (search) {
+    filteredMessages = filteredMessages.filter(
+      (msg) =>
+        msg.content.toLowerCase().includes(search.toLowerCase()) ||
+        getSenderInfo(msg.sender_id).name.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+  if (groupFilter === 'private') {
+    filteredMessages = filteredMessages.filter(msg => msg.content.startsWith("__PRIVATE_NOTE__:"));
+  } else {
+    filteredMessages = filteredMessages.filter(msg => !msg.content.startsWith("__PRIVATE_NOTE__:"));
+  }
 
   return (
     <div className="flex flex-col h-full bg-gray-50 rounded-lg shadow relative mr-10">

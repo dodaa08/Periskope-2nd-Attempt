@@ -16,7 +16,6 @@ interface User {
   email: string;
 }
 
-
 export default function GroupCreateModal({ users, currentUserId, onClose, onGroupCreated }: { users: User[]; currentUserId: string; onClose: () => void; onGroupCreated?: () => void }) {
   const [groupName, setGroupName] = useState("");
   const [search, setSearch] = useState("");
