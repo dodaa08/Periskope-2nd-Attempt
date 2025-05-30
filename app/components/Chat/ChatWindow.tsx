@@ -510,7 +510,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
               />
               <button
                 type="button"
-                className="hover:text-green-600"
+                className="hover:text-green-600 cursor-pointer"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
                 title="Attach file"
@@ -726,7 +726,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
             />
             <button
               type="button"
-              className="hover:text-green-600"
+              className="hover:text-green-600 cursor-pointer"
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
               title="Attach file"
