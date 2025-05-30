@@ -5,13 +5,17 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@supabase/auth-helpers-react";
 import {supabase} from "@/lib/supabaseClient";
 
+import { ImBlogger2 } from "react-icons/im";
+import { FiYoutube } from "react-icons/fi";
+
+
+
 export default function Navbar() {
     const  session = useSession();
     const router = useRouter();
 
     const signOut = () => {
       supabase.auth.signOut();
-      router.push("/signin");
     }
 
 
@@ -27,23 +31,26 @@ export default function Navbar() {
         </div>
         {/* Nav Links */}
         <div className="hidden md:flex gap-8 text-white font-medium">
-          <a href="#features" className="hover:text-green-400 transition">Features</a>
-          <a href="#integrations" className="hover:text-green-400 transition">Integrations</a>
-          <a href="#case-studies" className="hover:text-green-400 transition">Case Studies</a>
-          <a href="#resources" className="hover:text-green-400 transition">Resources</a>
-          <a href="#affiliates" className="hover:text-green-400 transition">Affiliates</a>
-          <a href="#pricing" className="hover:text-green-400 transition">Pricing</a>
+          <div className="flex items-center gap-3 hover:text-green-400 transition">
+          <ImBlogger2 className="text-blue-400 text-xl" />
+          <a href="#features" className="text-xl">I wrote a blog</a>
+          </div>
+          <div className="flex items-center gap-3 hover:text-green-400 transitio">
+          <FiYoutube className="text-red-500 text-xl" />
+          <a href="#integrations" className="text-xl">Watch Demo</a>
+          </div>
+          
         </div>
         {/* Login Button */}
         {
           session ? (
             <div className="hidden md:block">
-              <button onClick={() => signOut()} className="bg-green-700 cursor-pointer hover:bg-green-600 text-white font-semibold px-6 py-2 rounded-l transition">Logout</button>
+              <button onClick={() => signOut()} className=" bg-green-800 border-2 border-gray-800  cursor-pointer hover:bg-gray-900 text-white font-semibold px-6 py-2 rounded-xl transition duration-300">Logout</button>
             </div>
           ) : (
             <div className="hidden md:block">
               <Link href="/signin">
-            <button className="bg-green-700 cursor-pointer hover:bg-green-600 text-white  font-semibold px-6 py-2 rounded-l transition">Login</button>
+            <button className=" bg-green-800 border-2 border-gray-800  cursor-pointer hover:bg-green-900 text-white font-semibold px-6 py-2 rounded-xl transition duration-300">Login</button>
           </Link>
           </div>
         )}

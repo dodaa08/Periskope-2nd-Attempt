@@ -9,10 +9,10 @@ export default function Hero() {
   const session = useSession();
 
   return (
-    <section className="w-full flex flex-col md:flex-row items-center justify-center text-center md:text-left gap-0 md:gap-0 relative px-72">
-      {/* Grid SVG on the left (hidden on small screens) */}
-      <div className="hidden md:flex items-center justify-center -mr-6 -translate-x-6">
-        <svg width="300" height="300" className="w-[300px] h-[300px]">
+    <section className="w-full min-h-[60vh] flex flex-col items-center justify-center text-center relative px-4">
+      {/* Grid SVG as background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <svg width="600" height="600" className="w-[600px] h-[600px] opacity-10">
           <defs>
             <pattern id="grid" width="125" height="125" patternUnits="userSpaceOnUse">
               <path d="M 125 0 L 0 0 0 125" fill="none" stroke="#2e4732" strokeWidth="1" />
@@ -22,12 +22,13 @@ export default function Hero() {
         </svg>
       </div>
       {/* Hero Content */}
-      <div className="max-w-4xl mx-auto flex flex-col items-center md:items-start text-center md:text-left px-4 m-0 p-0">
+      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center px-4 m-0 p-0">
         {/* Badge */}
         
         {/* Headline */}
-        <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight max-w-4xl">
-          Manage <span className="text-green-500">WhatsApp Groups<br />and Chats</span> at scale
+        <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight max-w-4xl">
+          Manage <span className="text-green-500">WhatsApp Groups</span><br />
+          <span className="text-green-500">and Chats</span> at scale
         </h1>
         {/* Subheadline */}
         <p className="text-lg md:text-2xl text-gray-200 mb-8 max-w-2xl">
@@ -36,15 +37,15 @@ export default function Hero() {
         {/* Buttons */}
         {
           session ? (
-            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+            <div className="flex flex-col sm:flex-row gap-4 mb-4 justify-center">
               <Link href="/chats">
-              <button onClick={() => router.push("/chats")}  className="bg-green-700 hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-l transition cursor-pointer text-lg">Chats</button>
+              <button onClick={() => router.push("/chats")}  className="bg-green-800 border-2 border-gray-800  cursor-pointer hover:bg-green-900 text-white font-semibold px-8 py-3 rounded-xl transition duration-300">Chats</button>
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+            <div className="flex flex-col sm:flex-row gap-4 mb-4 justify-center">
             <Link href="/signup">
-              <button className="bg-green-600 hover:bg-green-500 text-white font-semibold px-8 py-3 rounded transition text-lg">Sign Up for Free</button>
+              <button className=" bg-green-800 border-2 border-gray-800  cursor-pointer hover:bg-green-900 text-white font-semibold px-8 py-3 rounded-xl transition duration-300">Sign Up for Free</button>
             </Link>
             <Link href="/signin">
               <button className="bg-white text-black hover:bg-gray-100 font-semibold px-8 py-3 rounded transition text-lg">Book a Demo</button>
