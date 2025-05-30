@@ -8,6 +8,7 @@ import {supabase} from "@/lib/supabaseClient";
 import { ImBlogger2 } from "react-icons/im";
 import { FiYoutube } from "react-icons/fi";
 
+import { FaGithub } from "react-icons/fa";
 
 
 export default function Navbar() {
@@ -30,15 +31,29 @@ export default function Navbar() {
           {/* <span className="text-white">peris</span><span className="text-green-400">kope</span> */}
         </div>
         {/* Nav Links */}
+
         <div className="hidden md:flex gap-8 text-white font-medium">
+
+          <Link href="https://medium.com/@kartikdoda86/periskope-sde-1-assignment-how-i-built-a-full-chat-app-using-ai-assistance-d81690040d22/" target="_blank" rel="noopener noreferrer">
           <div className="flex items-center gap-3 hover:text-green-400 transition">
           <ImBlogger2 className="text-blue-400 text-xl" />
-          <a href="#features" className="text-xl">I wrote a blog</a>
+          <a className="text-xl">I wrote a blog</a>
           </div>
+          </Link>
+
+          <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
           <div className="flex items-center gap-3 hover:text-green-400 transitio">
           <FiYoutube className="text-red-500 text-xl" />
-          <a href="#integrations" className="text-xl">Watch Demo</a>
+          <a className="text-xl">Watch Demo</a>
           </div>
+          </Link>
+
+          <Link href="https://github.com/dodaa08/Periskope-2nd-Attempt" target="_blank" rel="noopener noreferrer">
+          <div className="flex items-center gap-3 hover:text-green-400 transitio">
+          <FaGithub className="text-white text-xl" /> 
+          <a className="text-xl">Github</a>
+          </div>
+          </Link>
           
         </div>
         {/* Login Button */}
