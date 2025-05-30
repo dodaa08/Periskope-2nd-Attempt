@@ -41,7 +41,7 @@ export default function Navbar() {
           </div>
           </Link>
 
-          <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
+          <Link href="https://www.loom.com/share/5b8998ae5ca54c98bbd625249c5edfa6?sid=e6b2e245-84f9-4f63-b5c4-1549231d369c" target="_blank" rel="noopener noreferrer">
           <div className="flex items-center gap-3 hover:text-green-400 transitio">
           <FiYoutube className="text-red-500 text-xl" />
           <div className="text-xl">Watch Demo</div>
