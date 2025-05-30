@@ -37,21 +37,21 @@ export default function Navbar() {
           <Link href="https://medium.com/@kartikdoda86/periskope-sde-1-assignment-how-i-built-a-full-chat-app-using-ai-assistance-d81690040d22/" target="_blank" rel="noopener noreferrer">
           <div className="flex items-center gap-3 hover:text-green-400 transition">
           <ImBlogger2 className="text-blue-400 text-xl" />
-          <a className="text-xl">I wrote a blog</a>
+          <div className="text-xl">I wrote a blog</div>
           </div>
           </Link>
 
           <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
           <div className="flex items-center gap-3 hover:text-green-400 transitio">
           <FiYoutube className="text-red-500 text-xl" />
-          <a className="text-xl">Watch Demo</a>
+          <div className="text-xl">Watch Demo</div>
           </div>
           </Link>
 
           <Link href="https://github.com/dodaa08/Periskope-2nd-Attempt" target="_blank" rel="noopener noreferrer">
           <div className="flex items-center gap-3 hover:text-green-400 transitio">
           <FaGithub className="text-white text-xl" /> 
-          <a className="text-xl">Github</a>
+          <div className="text-xl">Github</div>
           </div>
           </Link>
           

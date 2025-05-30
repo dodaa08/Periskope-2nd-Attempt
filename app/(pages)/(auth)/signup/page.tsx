@@ -16,7 +16,10 @@ export default function Signup() {
 
   async function handleGoogleSignIn() {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: "http://localhost:3000/chats" } });
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/chats` }
+    });
     if (error) {
       toast.error(error.message || "Google sign in failed");
     } else {
