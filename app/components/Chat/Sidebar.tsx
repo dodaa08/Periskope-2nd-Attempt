@@ -14,6 +14,7 @@ import {
   FaStar,
   FaRegFileAlt,
 } from "react-icons/fa";
+import { GiStarsStack } from "react-icons/gi";
 import Link from "next/link";
 export default function Sidebar() {
   return (
@@ -52,7 +53,7 @@ export default function Sidebar() {
 
       {/* Bottom Icons */}
       <div className="flex flex-col items-center gap-2 mt-4">
-        <SidebarIcon icon={<FaStar />} />
+        <SidebarIcon icon={<GiStarsStack />} />
         <SidebarIcon icon={<FaRegFileAlt />} />
       </div>
     </aside>
@@ -72,20 +73,13 @@ function SidebarIcon({
 }) {
   return (
     <div
-      className={`relative flex items-center justify-center w-10 h-10 rounded-lg mb-1 ${
-        active
-          ? "bg-green-100 text-green-600"
-          : "hover:bg-gray-100 text-gray-500"
-      } transition`}
+      className={`relative flex items-center justify-center w-10 h-10 rounded-lg mb-1 transition ${
+        active ? "text-green-600" : "hover:bg-gray-100 text-gray-500"
+      }`}
     >
       {icon}
       {badge && (
         <span className="absolute -top-1 -right-1 text-xs">{badge}</span>
-      )}
-      {active && badgeColor && (
-        <span
-          className={`absolute inset-0 rounded-lg ${badgeColor} opacity-20 pointer-events-none`}
-        ></span>
       )}
     </div>
   );
