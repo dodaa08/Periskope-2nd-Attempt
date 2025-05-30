@@ -14,6 +14,7 @@ import { BiSolidFoodMenu } from "react-icons/bi";
 import { MdOutlineKeyboardArrowUp } from "react-icons/md";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { HiSparkles } from "react-icons/hi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
 interface User {
@@ -66,6 +67,8 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
   const [users, setUsers] = useState<User[]>([]);
   const [showParticipants, setShowParticipants] = useState(false);
   const [groupMemberIds, setGroupMemberIds] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch users when a group is selected
   useEffect(() => {
@@ -227,6 +230,56 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
     }
   };
 
+  // Helper: Upload file to Supabase Storage and return public URL
+  const uploadFile = async (file: File) => {
+    setUploading(true);
+    const fileExt = file.name.split('.').pop();
+    const filePath = `${currentUser?.id}/${Date.now()}_${file.name}`;
+    const { data, error } = await supabase.storage.from('new-files').upload(filePath, file);
+    if (error) {
+      setUploading(false);
+      alert('File upload failed: ' + error.message);
+      return null;
+    }
+    // Get public URL
+    const { data: publicUrlData } = supabase.storage.from('new-files').getPublicUrl(filePath);
+    setUploading(false);
+    return publicUrlData?.publicUrl || null;
+  };
+
+  // Handle file input change
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !currentUser) return;
+    const url = await uploadFile(file);
+    if (!url) return;
+    // Send as message (for both group and direct chat)
+    if (selectedGroup) {
+      await supabase.from("group_messages").insert([
+        {
+          sender_id: currentUser.id,
+          group_id: selectedGroup.id,
+          content: url, // Store file URL in content
+        },
+      ]);
+    } else if (selectedUser) {
+      await supabase.from("messages").insert([
+        {
+          sender_id: currentUser.id,
+          receiver_id: selectedUser.id,
+          content: url, // Store file URL in content
+        },
+      ]);
+    }
+    // Optionally, clear file input
+    e.target.value = "";
+  };
+
+  // Helper: Check if content is a file URL (very basic)
+  const isFileUrl = (content: string) => content.startsWith("http") && content.includes("/new-files/");
+  // Helper: Check if image
+  const isImage = (url: string) => /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+
   if (selectedGroup) {
     const name = selectedGroup.name;
     // Helper to get sender email for group messages
@@ -372,7 +425,21 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
                       {/* Sender email on top, small */}
                       <div className="text-[11px] text-gray-400 mb-1 font-medium">{getGroupSenderEmail(msg.sender_id)}</div>
                       {/* Message content with highlight */}
-                      <div>{highlightMatch(msg.content, search)}</div>
+                      <div>
+                        {isFileUrl(msg.content) ? (
+                          isImage(msg.content) ? (
+                            <a href={msg.content} target="_blank" rel="noopener noreferrer">
+                              <img src={msg.content} alt="attachment" className="max-h-40 max-w-xs rounded border mt-1" />
+                            </a>
+                          ) : (
+                            <a href={msg.content} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
+                              {msg.content.split("/").pop()}
+                            </a>
+                          )
+                        ) : (
+                          highlightMatch(msg.content, search)
+                        )}
+                      </div>
                       {/* Time and ticks directly under message, right-aligned, tight */}
                       <div className="flex items-center justify-end gap-0.5 text-xs text-gray-400 mt-0.5">
                         <span>{new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
@@ -408,7 +475,23 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
           {/* Action icons row */}
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-4 text-gray-700 ml-2">
-              <button type="button" className="hover:text-green-600"><IoMdAttach size={20} /></button>
+              {/* File input and attach button (only one, in the action row) */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+              <button
+                type="button"
+                className="hover:text-green-600"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                title="Attach file"
+              >
+                {uploading ? <AiOutlineLoading3Quarters className="animate-spin" size={20} /> : <IoMdAttach size={20} />}
+              </button>
+              {/* Other action icons */}
               <button type="button" className="hover:text-green-600"><CiFaceSmile size={20} /></button>
               <button type="button" className="hover:text-green-600"><IoTimeOutline size={20} /></button>
               <button type="button" className="hover:text-green-600"><CiTimer size={20} /></button>
@@ -554,7 +637,21 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
                         <span className="text-xs text-gray-400 ml-2">{sender.contact}</span>
                         <div className="flex gap-10">
                           <div className="flex items-center justify-between mb-1"></div>
-                          <div>{highlightMatch(msg.content, search)}</div>
+                          <div>
+                            {isFileUrl(msg.content) ? (
+                              isImage(msg.content) ? (
+                                <a href={msg.content} target="_blank" rel="noopener noreferrer">
+                                  <img src={msg.content} alt="attachment" className="max-h-40 max-w-xs rounded border mt-1" />
+                                </a>
+                              ) : (
+                                <a href={msg.content} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
+                                  {msg.content.split("/").pop()}
+                                </a>
+                              )
+                            ) : (
+                              highlightMatch(msg.content, search)
+                            )}
+                          </div>
                           <div className="text-[10px] text-gray-400 mt-1 text-right">{new Date(msg.created_at).toLocaleString()}</div>
                         </div>
                       </div>
@@ -589,7 +686,23 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
         {/* Action icons row */}
         <div className="flex items-center justify-between mt-2">
           <div className="flex items-center gap-4 text-gray-700 ml-2">
-            <button type="button" className="hover:text-green-600"><IoMdAttach size={20} /></button>
+            {/* File input and attach button (only one, in the action row) */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+            <button
+              type="button"
+              className="hover:text-green-600"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              title="Attach file"
+            >
+              {uploading ? <AiOutlineLoading3Quarters className="animate-spin" size={20} /> : <IoMdAttach size={20} />}
+            </button>
+            {/* Other action icons */}
             <button type="button" className="hover:text-green-600"><CiFaceSmile size={20} /></button>
             <button type="button" className="hover:text-green-600"><IoTimeOutline size={20} /></button>
             <button type="button" className="hover:text-green-600"><CiTimer size={20} /></button>

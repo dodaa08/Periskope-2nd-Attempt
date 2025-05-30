@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import toast from "react-hot-toast";
 
+
 interface User {
   id: string;
   name: string;
@@ -14,6 +15,7 @@ interface User {
   };
   email: string;
 }
+
 
 export default function GroupCreateModal({ users, currentUserId, onClose, onGroupCreated }: { users: User[]; currentUserId: string; onClose: () => void; onGroupCreated?: () => void }) {
   const [groupName, setGroupName] = useState("");
