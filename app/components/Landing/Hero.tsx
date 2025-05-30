@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 export default function Hero() {
   const router = useRouter();
   const session = useSession();
-
+  
   return (
     <section className="w-full min-h-[60vh] flex flex-col items-center justify-center text-center relative px-4">
       {/* Grid SVG as background */}

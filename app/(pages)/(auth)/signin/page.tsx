@@ -44,7 +44,8 @@ export default function SignIn() {
   return (
     <SupabaseContext>
       <ToasterClient />
-      <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4">
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-green-900 via-green-950 to-black px-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 mt-10 text-center drop-shadow-lg">Welcome Back</h1>
         <div className="w-full max-w-sm bg-white border-2 border-gray-200 rounded-xl shadow p-8 flex flex-col items-center">
           {/* Logo */}
           <div className="cursor-pointer">
