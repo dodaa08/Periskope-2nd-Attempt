@@ -42,35 +42,33 @@ export default function ChatsPage() {
   }
 
   return (
-    <div className="bg-gray-100 h-screen flex relative ">
-      {/* Sidebar sticky */}
-      <div className="sticky top-0 h-screen z-30">
-        <Sidebar />
+    <div className="">
+      {/* TopBar sticky */}
+      <div className="sticky top-0 z-20">
+        <TopBar />
       </div>
-      <div className="flex-1 flex flex-col min-h-0">
-        {/* TopBar sticky */}
-        <div className="sticky top-0 z-20">
-          <TopBar />
+      <div className="flex flex-1 min-h-0">
+        {/* Sidebar sticky */}
+        <div className="sticky top-0 h-screen z-30">
+          <Sidebar />
         </div>
-        <div className="flex flex-1 min-h-0">
-          {/* People list sidebar sticky */}
-          <div className="w-80 border-r bg-white h-full flex w-max flex-col overflow-y-hidden sticky top-0 z-10">
-            <div className="flex-1 overflow-y-auto">
-              <PeopleList
-                onSelectUser={(user) => { setSelectedUser(user); setSelectedGroup(null); }}
-                onSelectGroup={(group) => { setSelectedGroup(group); setSelectedUser(null); }}
-                selectedUserId={selectedUser?.id}
-                currentUserId={currentUser.id}
-              />
-            </div>
-          </div>
-          {/* Main chat area (scrollable) */}
-          <div className="flex-1 h-full flex flex-col min-h-0 overflow-y-auto">
-            <ChatWindow selectedUser={selectedUser} selectedGroup={selectedGroup} currentUser={currentUser} />
+        {/* People list sidebar sticky */}
+        <div className="w-80 border-r bg-white h-full flex w-max flex-col overflow-y-hidden sticky top-0 z-10">
+          <div className="flex-1 overflow-y-auto">
+            <PeopleList
+              onSelectUser={(user) => { setSelectedUser(user); setSelectedGroup(null); }}
+              onSelectGroup={(group) => { setSelectedGroup(group); setSelectedUser(null); }}
+              selectedUserId={selectedUser?.id}
+              currentUserId={currentUser.id}
+            />
           </div>
         </div>
+        {/* Main chat area (scrollable) */}
+        <div className="flex-1 h-full flex flex-col min-h-0 overflow-y-auto">
+          <ChatWindow selectedUser={selectedUser} selectedGroup={selectedGroup} currentUser={currentUser} />
+        </div>
+        <RightSidebar />
       </div>
-      <RightSidebar />
     </div>
   );
 }
