@@ -589,7 +589,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
   }
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 rounded-lg shadow relative mr-10">
+    <div className="flex flex-col h-screen bg-gray-50 rounded-lg shadow relative mr-10">
       {/* Header */}
       <div className="flex items-center gap-3 px-6 py-3 border-b bg-white sticky top-0 z-10">
         {avatar ? (

@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import type { User } from "@/app/components/Chat/PeopleList";
 import { supabase } from "@/lib/supabaseClient";
 
+
 export default function ChatsPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<{ id: string; name: string } | null>(null);
@@ -41,7 +42,7 @@ export default function ChatsPage() {
   }
 
   return (
-    <div className="bg-gray-100 h-screen flex relative overflow-hidden">
+    <div className="bg-gray-100 h-screen flex relative ">
       {/* Sidebar sticky */}
       <div className="sticky top-0 h-screen z-30">
         <Sidebar />
