@@ -49,12 +49,12 @@ export default function ChatsPage() {
       </div>
       <div className="flex flex-1 min-h-0">
         {/* Sidebar sticky */}
-        <div className="sticky top-0 h-screen z-30">
+        <div className="sticky top-0 h-screen ">
           <Sidebar />
         </div>
         {/* People list sidebar sticky */}
-        <div className="w-80 border-r bg-white h-full flex w-max flex-col overflow-y-hidden sticky top-0 z-10">
-          <div className="flex-1 overflow-y-auto">
+        <div className="w-80 border-r border-gray-200 bg-white h-full flex w-max flex-col ">
+          <div className="flex-1 ">
             <PeopleList
               onSelectUser={(user) => { setSelectedUser(user); setSelectedGroup(null); }}
               onSelectGroup={(group) => { setSelectedGroup(group); setSelectedUser(null); }}

@@ -8,7 +8,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 
 export default function TopBar() {
   return (
-    <header className="w-full flex items-center justify-between bg-white border-b px-4 h-12 z-10 sticky top-0">
+    <header className="w-full flex items-center justify-between bg-white border-b border-gray-200 px-4 h-12 z-10 sticky top-0">
       {/* Left: Chats label */}
       <div className="flex items-center gap-2">
         <FaRegCommentDots className="text-gray-400 text-lg" />

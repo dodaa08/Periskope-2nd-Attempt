@@ -312,7 +312,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
     return (
       <div className="flex flex-col h-screen bg-gray-50 rounded-lg shadow relative mr-10">
         {/* Group Header */}
-        <div className="flex items-center gap-3 px-6 py-3 border-b bg-white sticky top-0 z-10 relative">
+        <div className="flex items-center gap-3 px-6 py-3 border-b border-gray-100 bg-white sticky top-0 z-10 relative">
           <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center text-lg font-bold text-blue-700 border border-gray-200">
             {name[0]?.toUpperCase() || '?'}
           </div>
@@ -384,7 +384,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
           )}
         </div>
         {/* Filter bar for group messages */}
-        <div className="flex items-center gap-2 px-6 py-2 bg-white border-b border-gray-100">
+        <div className="flex items-center gap-2 px-6 py-3 bg-white border-b border-gray-100">
           <span className="text-xs text-gray-500 font-semibold">Show:</span>
           <button onClick={() => setGroupFilter('private')} className={`text-xs px-2 py-1 rounded ${groupFilter==='private' ? 'bg-yellow-100 text-yellow-800 font-bold' : 'bg-gray-100 text-gray-600'}`}>Private Notes</button>
           <button onClick={() => setGroupFilter('normal')} className={`text-xs px-2 py-1 rounded ${groupFilter==='normal' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-gray-100 text-gray-600'}`}>Whatsapp</button>
@@ -438,7 +438,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
                 const isMe = msg.sender_id === currentUser?.id;
                 return (
                   <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
-                    <div className={`flex flex-col max-w-xs md:max-w-md px-4 py-2 rounded-lg shadow text-sm ${msg.content.startsWith("__PRIVATE_NOTE__:") ? "bg-yellow-50 border-l-4 border-yellow-400 text-black" : isMe ? "bg-green-100 text-green-900" : "bg-white text-gray-900"}`} style={{ wordBreak: "break-word" }}>
+                    <div className={`flex flex-col max-w-xs md:max-w-md px-4 py-2 rounded-lg shadow text-sm ${msg.content.startsWith("__PRIVATE_NOTE__:") ? "bg-yellow-50 border-l-4  border-yellow-400 text-black" : isMe ? "bg-green-100 text-green-900" : "bg-white text-gray-900"}`} style={{ wordBreak: "break-word" }}>
                       {/* Sender email on top, small */}
                       <div className="text-[11px] text-gray-400 mb-1 font-medium">{getGroupSenderEmail(msg.sender_id)}{msg.content.startsWith("__PRIVATE_NOTE__:") && <span className="ml-2 text-yellow-800 font-bold">[Private Note]</span>}</div>
                       {/* Message content with highlight, strip label prefix for private notes */}
@@ -471,7 +471,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
           <div ref={messagesEndRef} />
         </div>
         {/* Input */}
-        <form onSubmit={sendGroupMessage} className="px-6 py-3 border-t bg-white sticky bottom-0 z-10 flex flex-col gap-2">
+        <form onSubmit={sendGroupMessage} className="px-6 py-3 border-t border-gray-200 bg-white sticky bottom-0 z-10 flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <input
               type="text"
@@ -498,10 +498,10 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
               {privateNote ? 'Private Note' : 'Whatsapp'}
             </button>
           </div>
-          {/* Action icons row */}s
+          {/* Action icons row */}
           <div className="flex items-center justify-between mt-2">
             <div className="flex items-center gap-4 text-gray-700 ml-2">
-              {/* File input and attach button (only one, in the action row) */}
+              
               <input
                 type="file"
                 ref={fileInputRef}
@@ -541,8 +541,10 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
 
   if (!selectedUser) {
     return (
-      <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">
+      <div className="flex-1 flex items-center  justify-center text-gray-400 text-lg h-screen bg-gray-50">
+        <div className="text-gray-400 text-lg flex flex-col items-center justify-center h-screen">
         Select a user to start chatting
+        </div>
       </div>
     );
   }
@@ -591,7 +593,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
   return (
     <div className="flex flex-col h-screen bg-gray-50 rounded-lg shadow relative mr-10">
       {/* Header */}
-      <div className="flex items-center gap-3 px-6 py-3 border-b bg-white sticky top-0 z-10">
+      <div className="flex items-center gap-3 px-6 py-3  bg-white sticky top-0 z-10">
         {avatar ? (
           <img src={avatar} alt={name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
         ) : (
@@ -696,7 +698,7 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
         <div ref={messagesEndRef} />
       </div>
       {/* Input */}
-      <form onSubmit={sendMessage} className="px-6 py-3 border-t bg-white sticky bottom-0 z-10 flex flex-col gap-2">
+      <form onSubmit={sendMessage} className="px-6 py-3 border-t border-gray-200 bg-white sticky bottom-0 z-10 flex flex-col gap-2">
         <div className="flex items-center gap-2">
           <input
             type="text"

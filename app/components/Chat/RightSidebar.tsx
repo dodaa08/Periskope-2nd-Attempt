@@ -19,7 +19,7 @@ import { MdChecklistRtl } from "react-icons/md";
 
 export default function RightSidebar() {
   return (
-    <aside className="flex flex-col items-center bg-white h-screen w-12 py-4 border-l gap-4 fixed right-0 top-0 ">
+    <aside className="flex flex-col items-center bg-white h-screen w-12 py-4 border-l border-gray-200 gap-4 fixed right-0 top-0 ">
       <div className="flex flex-col items-center gap-10 mt-20">
         <MdOutlineSpaceDashboard className="text-gray-600 text-xl hover:text-blue-500 cursor-pointer" />
         <FaSyncAlt className="text-gray-400 text-xl hover:text-blue-500 cursor-pointer" />

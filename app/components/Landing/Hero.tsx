@@ -26,7 +26,7 @@ export default function Hero() {
         {/* Badge */}
         
         {/* Headline */}
-        <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight max-w-4xl">
+        <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white leading-tight max-w-4xl">
           Manage <span className="text-green-500">WhatsApp Groups</span><br />
           <span className="text-green-500">and Chats</span> at scale
         </h1>

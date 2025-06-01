@@ -122,7 +122,7 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
   return (
     <div className="flex flex-col bg-white rounded-lg shadow w-full h-full min-h-0 relative h-screen">
       {/* Search/Filter Bar */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b sticky top-0 bg-white z-10">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-700 px-3 py-1 rounded">
           <FaFolderPlus size={16} className="text-green-500 mr-2" />
         <button className=" font-semibold text-sm">Custom filter</button>

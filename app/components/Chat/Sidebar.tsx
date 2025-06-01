@@ -21,7 +21,7 @@ import { CgChevronRightR } from "react-icons/cg";
 
 export default function Sidebar() {
   return (
-    <aside className="flex flex-col items-center bg-white min-h-screen  w-18 py-4 border-r gap-2 relative">
+    <aside className="flex flex-col items-center bg-white min-h-screen  w-18 py-4 border-r border-gray-200 gap-2 relative">
       
       {/* Logo */}
       <Link href="/">
