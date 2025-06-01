@@ -21,7 +21,7 @@ export default function Navbar() {
 
 
   return (  
-    <nav className="w-full bg-[#08160b] text-white">
+    <nav className="w-full bg-[#0d2614] text-white">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4">
         {/* Logo */}
         <div className="flex items-center gap-2 font-bold text-xl select-none">

@@ -8,7 +8,7 @@ export default function LandingPage() {
   return (
     <SupabaseContext>
       <ToasterClient />
-      <div className="bg-[#08160b] min-h-screen w-full flex flex-col relative overflow-hidden">
+      <div className="bg-[#0d2614] min-h-screen w-full flex flex-col relative overflow-hidden">
         <Navbar />
         
         <main className="flex-1 flex flex-col items-center pt-16 md:pt-24 relative z-10">
