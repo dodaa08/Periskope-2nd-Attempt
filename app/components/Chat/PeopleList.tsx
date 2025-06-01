@@ -117,12 +117,12 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
     })),
   ];
 
-  if (loading) return <div className="p-4 text-center text-gray-500">Loading...</div>;
+  if (loading) return <div className="p-4 text-center bg-gray-50 text-gray-500 h-screen">Loading...</div>;
 
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow relative">
+    <div className="flex flex-col bg-white  shadow relative h-full w-max overflow-y-auto">
       {/* Search/Filter Bar */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10">
+      <div className="flex items-center gap-2 px-4 py-4 border-b border-gray-200  sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-700 px-3 py-1 rounded">
           <FaFolderPlus size={16} className="text-green-500 mr-2" />
         <button className=" font-semibold text-sm">Custom filter</button>
@@ -232,16 +232,14 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
           }
         })}
       </div>
-      {/* Create Group Button at the end of the list */}
-      <div className="flex justify-end p-4">
-        <button
-          className="bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg z-20"
-          title="Create Group"
-          onClick={() => setShowGroupModal(true)}
-        >
-          <RiChatSmileAiLine size={28} />
-        </button>
-      </div>
+      {/* Floating Create Group Button */}
+      <button
+        className="absolute bottom-6 right-6 cursor-pointer bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg z-20"
+        title="Create Group"
+        onClick={() => setShowGroupModal(true)}
+      >
+        <RiChatSmileAiLine size={28} />
+      </button>
       {/* Group Creation Modal */}
       {showGroupModal && (
         <GroupCreateModal

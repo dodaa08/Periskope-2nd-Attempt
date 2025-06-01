@@ -308,9 +308,9 @@ export default function ChatWindow({ selectedUser, selectedGroup, currentUser }:
       filteredMessages = filteredMessages.filter(msg => msg.content.startsWith("__PRIVATE_NOTE__:"));
     } else {
       filteredMessages = filteredMessages.filter(msg => !msg.content.startsWith("__PRIVATE_NOTE__:"));
-    }
+    }  
     return (
-      <div className="flex flex-col h-screen bg-gray-50 rounded-lg shadow relative mr-10">
+      <div className="flex flex-col h-screen bg-gray-50  shadow relative mr-10">
         {/* Group Header */}
         <div className="flex items-center gap-3 px-6 py-3 border-b border-gray-100 bg-white sticky top-0 z-10 relative">
           <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center text-lg font-bold text-blue-700 border border-gray-200">
