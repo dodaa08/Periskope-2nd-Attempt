@@ -120,7 +120,7 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
   if (loading) return <div className="p-4 text-center text-gray-500">Loading...</div>;
 
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow w-full h-full min-h-0 relative h-screen">
+    <div className="flex flex-col bg-white rounded-lg shadow">
       {/* Search/Filter Bar */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-700 px-3 py-1 rounded">

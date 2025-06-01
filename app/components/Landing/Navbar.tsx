@@ -60,7 +60,7 @@ export default function Navbar() {
         {
           session ? (
             <div className="hidden md:block">
-              <button onClick={() => signOut()} className=" bg-green-800 border-2 border-gray-800  cursor-pointer hover:bg-gray-900 text-white font-semibold px-6 py-2 rounded-xl transition duration-300">Logout</button>
+              <button onClick={() => signOut()} className=" bg-green-800 border-2 border-gray-800  cursor-pointer hover:bg-green-900 text-white font-semibold px-6 py-2 rounded-xl transition duration-300">Logout</button>
             </div>
           ) : (
             <div className="hidden md:block">
