@@ -34,11 +34,11 @@ export default function ChatsPage() {
   }, []);
 
   if (userLoading) {
-    return <div className="flex items-center justify-center h-screen text-gray-500 text-lg">Loading...</div>;
+    return <div className="flex items-center bg-gray-50 justify-center h-screen text-gray-500 text-lg">Loading...</div>;
   }
 
   if (!currentUser) {
-    return <div className="flex items-center justify-center h-screen text-gray-500 text-lg">Please log in to view your chats.</div>;
+    return <div className="flex items-center bg-gray-50 justify-center h-screen text-gray-500 text-lg">Please log in to view your chats.</div>;
   }
 
   return (
