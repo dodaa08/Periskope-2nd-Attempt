@@ -120,7 +120,7 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
   if (loading) return <div className="p-4 text-center text-gray-500">Loading...</div>;
 
   return (
-    <div className="flex flex-col bg-white rounded-lg shadow">
+    <div className="flex flex-col bg-white rounded-lg shadow relative">
       {/* Search/Filter Bar */}
       <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-700 px-3 py-1 rounded">
@@ -232,15 +232,16 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
           }
         })}
       </div>
-      {/* Floating Create Group Button */}
-      <button
-        className="absolute bottom-4 cursor-pointer right-4 bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg z-20"
-        title="Create Group"
-        onClick={() => setShowGroupModal(true)}
-        style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
-      >
-        <RiChatSmileAiLine size={28} />
-      </button>
+      {/* Create Group Button at the end of the list */}
+      <div className="flex justify-end p-4">
+        <button
+          className="bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg z-20"
+          title="Create Group"
+          onClick={() => setShowGroupModal(true)}
+        >
+          <RiChatSmileAiLine size={28} />
+        </button>
+      </div>
       {/* Group Creation Modal */}
       {showGroupModal && (
         <GroupCreateModal

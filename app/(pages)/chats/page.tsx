@@ -53,7 +53,7 @@ export default function ChatsPage() {
           <Sidebar />
         </div>
         {/* People list sidebar sticky */}
-        <div className="w-80 border-r border-gray-200 bg-white h-screen flex w-max flex-col">
+        <div className="w-80 border-r border-gray-200 bg-white h-screen flex w-max flex-col ">
           <div className="flex-1">
             <PeopleList
               onSelectUser={(user) => { setSelectedUser(user); setSelectedGroup(null); }}
