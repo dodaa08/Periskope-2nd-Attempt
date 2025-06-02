@@ -7,6 +7,7 @@ import { FaFolderPlus, FaSearch, FaUsers } from "react-icons/fa";
 import { FaWifi } from "react-icons/fa";
 import { RiChatSmileAiLine } from "react-icons/ri";
 import GroupCreateModal from "@/app/components/Chat/GroupCreateModal";
+import { FixedSizeList as List } from 'react-window';
 
 
 interface User {
@@ -118,10 +119,78 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
     })),
   ];
 
+  const ITEM_SIZE = 72; // px, adjust as needed
+  const listHeight = 800; // px, or use a calculation for available height
+
+  // Render function for react-window
+  const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
+    const item = combinedList[index];
+    if (item.type === 'group') {
+      return (
+        <div
+          style={style}
+          key={item.id}
+          className={`flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition group`}
+          onClick={() => onSelectGroup({ id: item.id, name: item.name })}
+        >
+          <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center text-xl font-bold text-blue-700 border border-gray-200">
+            {item.name[0]?.toUpperCase() || '?'}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-gray-900 truncate max-w-[120px]">{item.name}</span>
+              <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-medium">Group</span>
+            </div>
+            <div className="text-gray-500 text-sm truncate">Group chat</div>
+          </div>
+        </div>
+      );
+    } else if (item.type === 'user') {
+      const { user, avatar, name } = item;
+      const lastMessage = "This is a last message preview.";
+      const badge = index % 3 === 0 ? "Demo" : index % 3 === 1 ? "Signup" : "Content";
+      const timestamp = "Yesterday";
+      const isSelected = user.id === selectedUserId;
+      return (
+        <div
+          style={style}
+          key={user.id}
+          onClick={() => onSelectUser(user)}
+          className={`flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition group ${isSelected ? 'bg-green-50' : ''}`}
+        >
+          {avatar ? (
+            <img
+              src={avatar}
+              alt={name}
+              className="w-12 h-12 rounded-full object-cover border border-gray-200"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-xl font-bold text-green-700 border border-gray-200">
+              {name[0]?.toUpperCase() || "?"}
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-gray-900 truncate max-w-[120px]">{highlightMatch(name, search)}</span>
+              <span className={`text-xs px-2 py-0.5 rounded bg-gray-100 font-medium ${badge === "Demo" ? "text-orange-600 bg-orange-100" : badge === "Signup" ? "text-green-700 bg-green-100" : "text-blue-700 bg-blue-100"}`}>{badge}</span>
+            </div>
+            <div className="text-gray-500 text-sm truncate max-w-[120px]">{lastMessage}</div>
+          </div>
+          <div className="flex flex-col items-end ml-2 min-w-[60px]">
+            <span className="text-xs text-gray-400">{timestamp}</span>
+            {index === 0 && <span className="w-2 h-2 bg-green-400 rounded-full mt-1"></span>}
+          </div>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
   if (loading) return <div className="p-4 text-center bg-gray-50 text-gray-500 h-screen">Loading...</div>;
 
   return (
-    <div className="flex flex-col bg-white  shadow relative h-full w-max overflow-hidden">
+    <div className="flex flex-col bg-white shadow relative h-full w-max overflow-hidden">
       {/* Search/Filter Bar */}
       <div className="flex items-center gap-2 px-4 py-4 border-b border-gray-200  sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-700 px-3 py-1 rounded">
@@ -169,69 +238,15 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
         )}
       </div>
       {/* Scrollable List */}
-      <div className="flex-1 overflow-y-auto">
-        {combinedList.map((item, idx) => {
-          if (item.type === 'group') {
-            // Render group like a user, but with a different avatar color and a group label
-            return (
-              <div
-                key={item.id}
-                className={`flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition group`}
-                onClick={() => onSelectGroup({ id: item.id, name: item.name })}
-              >
-                <div className="w-12 h-12 rounded-full bg-blue-200 flex items-center justify-center text-xl font-bold text-blue-700 border border-gray-200">
-                  {item.name[0]?.toUpperCase() || '?'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900 truncate">{item.name}</span>
-                    <span className="text-xs px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-medium">Group</span>
-                  </div>
-                  <div className="text-gray-500 text-sm truncate">Group chat</div>
-                </div>
-              </div>
-            );
-          } else if (item.type === 'user') {
-            const { user, avatar, name } = item;
-            const lastMessage = "This is a last message preview.";
-            const badge = idx % 3 === 0 ? "Demo" : idx % 3 === 1 ? "Signup" : "Content";
-            const timestamp = "Yesterday";
-            const isSelected = user.id === selectedUserId;
-            return (
-              <div
-                key={user.id}
-                onClick={() => onSelectUser(user)}
-                className={`flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer transition group ${isSelected ? 'bg-green-50' : ''}`}
-              >
-                {avatar ? (
-                  <img
-                    src={avatar}
-                    alt={name}
-                    className="w-12 h-12 rounded-full object-cover border border-gray-200"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-xl font-bold text-green-700 border border-gray-200">
-                    {name[0]?.toUpperCase() || "?"}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900 truncate">{highlightMatch(name, search)}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded bg-gray-100 font-medium ${badge === "Demo" ? "text-orange-600 bg-orange-100" : badge === "Signup" ? "text-green-700 bg-green-100" : "text-blue-700 bg-blue-100"}`}>{badge}</span>
-                  </div>
-                  <div className="text-gray-500 text-sm truncate">{lastMessage}</div>
-                </div>
-                <div className="flex flex-col items-end ml-2 min-w-[60px]">
-                  <span className="text-xs text-gray-400">{timestamp}</span>
-                  {/* Example unread dot */}
-                  {idx === 0 && <span className="w-2 h-2 bg-green-400 rounded-full mt-1"></span>}
-                </div>
-              </div>
-            );
-          } else {
-            return null;
-          }
-        })}
+      <div className="flex-1 h-full overflow-y-auto scrollbar scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-gray-100">
+        <List
+          height={listHeight}
+          itemCount={combinedList.length}
+          itemSize={ITEM_SIZE}
+          width={'100%'}
+        >
+          {Row}
+        </List>
       </div>
       {/* Floating Create Group Button */}
       <button

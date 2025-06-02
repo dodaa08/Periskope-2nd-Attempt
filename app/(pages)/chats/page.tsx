@@ -47,13 +47,14 @@ export default function ChatsPage() {
       <div className="">
         <TopBar />
       </div>
-      <div className="flex flex-1 min-h-0 ">
+   
+      <div className="flex flex-1  ">
         {/* Sidebar sticky */}
-        <div className="h-screen">
+        <div className="">
           <Sidebar /> 
         </div>
         {/* People list sidebar sticky */}
-        <div className="w-80 border-r border-gray-200 flex w-max flex-col h-screen ">
+        <div className=" border-r border-gray-200 flex w-max flex-col h-screen ">
           <div className="flex-1">
             <PeopleList
               onSelectUser={(user) => { setSelectedUser(user); setSelectedGroup(null); }}
@@ -64,7 +65,7 @@ export default function ChatsPage() {
           </div>
         </div>
         {/* Main chat area (scrollable) */}
-        <div className="flex-1 h-screen w-screen flex flex-col ">
+        <div className="flex-1 h-max w-screen flex flex-col ">
           <ChatWindow selectedUser={selectedUser} selectedGroup={selectedGroup} currentUser={currentUser} />
         </div>
         <RightSidebar />
