@@ -8,6 +8,7 @@ import { FaWifi } from "react-icons/fa";
 import { RiChatSmileAiLine } from "react-icons/ri";
 import GroupCreateModal from "@/app/components/Chat/GroupCreateModal";
 
+
 interface User {
   id: string;
   name: string;
@@ -120,7 +121,7 @@ export default function PeopleList({ onSelectUser, onSelectGroup, selectedUserId
   if (loading) return <div className="p-4 text-center bg-gray-50 text-gray-500 h-screen">Loading...</div>;
 
   return (
-    <div className="flex flex-col bg-white  shadow relative h-full w-max overflow-y-auto">
+    <div className="flex flex-col bg-white  shadow relative h-full w-max overflow-hidden">
       {/* Search/Filter Bar */}
       <div className="flex items-center gap-2 px-4 py-4 border-b border-gray-200  sticky top-0 bg-white z-10">
         <div className="flex items-center  text-green-700 px-3 py-1 rounded">
